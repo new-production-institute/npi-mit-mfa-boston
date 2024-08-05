@@ -53,9 +53,23 @@
     .highlight rect {
       fill: #007BFF !important;
     }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .controls input {
+      font-size: 16px;
+      padding: 5px;
+      width: 60px;
+    }
   </style>
 </head>
 <body>
+  <div class="controls">
+    Font Size Percentage: <input type="number" id="fontSizePercentage" value="0.7" min="0.1" step="0.1">%
+  </div>
   <h1>Food Flow in Boston</h1>
   <script>
     var data = {
@@ -218,10 +232,11 @@
 
     function adjustFontSize() {
       var width = window.innerWidth;
+      var percentage = parseFloat(document.getElementById('fontSizePercentage').value) / 100;
 
       // Use a formula to adjust the font size dynamically based on screen width
-      var fontSize = Math.max(7, width * 0.007);
-      var headerFontSize = Math.max(18, width * 0.03); // Base header font size on 3% of the width, with a minimum of 18px
+      var fontSize = Math.max(7, width * percentage);
+      var headerFontSize = Math.max(18, width * percentage * 3); // Base header font size on 3% of the width, with a minimum of 18px
 
       d3.selectAll('.node text').style('font-size', fontSize + 'px');
       d3.select('h1').style('font-size', headerFontSize + 'px');
@@ -245,6 +260,8 @@
       node.attr("transform", function(d) { return `translate(${d.x0},${d.y0})`; });
       node.select("rect").attr("height", function(d) { return d.y1 - d.y0; });
     });
+
+    document.getElementById('fontSizePercentage').addEventListener('input', adjustFontSize);
   </script>
 </body>
 </html>
