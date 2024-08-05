@@ -40,9 +40,8 @@
     }
 
     svg {
-      width: calc(100% - 40px);
-      height: calc(100vh - 40px);
-      margin: 20px;
+      width: 100%;
+      height: calc(100vh - 80px); /* Adjust based on header height */
     }
 
     h1 {
@@ -100,8 +99,9 @@
     };
 
     var margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    var headerHeight = document.querySelector('h1').offsetHeight + 40; // Adjust based on header height
     var width = window.innerWidth - margin.left - margin.right;
-    var height = window.innerHeight - margin.top - margin.bottom;
+    var height = window.innerHeight - headerHeight - margin.top - margin.bottom;
 
     var svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -113,8 +113,8 @@
         .nodeId(d => d.name)
         .nodeAlign(d3.sankeyRight)
         .nodeWidth(15)
-        .nodePadding(10)
-        .extent([[1, 1], [width - 1, height - 6]]);
+        .nodePadding(100)
+        .extent([[1, 1], [width - 1, height - 1]]);
 
     var graph = sankey({
       nodes: data.nodes.map(d => Object.assign({}, d)),
@@ -202,9 +202,9 @@
 
     window.addEventListener("resize", function() {
       width = window.innerWidth - margin.left - margin.right;
-      height = window.innerHeight - margin.top - margin.bottom;
+      height = window.innerHeight - headerHeight - margin.top - margin.bottom;
       svg.attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
-      sankey.extent([[1, 1], [width - 1, height - 6]]);
+      sankey.extent([[1, 1], [width - 1, height - 1]]);
       graph = sankey({
         nodes: graph.nodes,
         links: graph.links
