@@ -25,7 +25,6 @@
 
     .node text {
       pointer-events: none;
-      font-size: 12px;
       fill: #333;
     }
 
@@ -98,7 +97,7 @@
       ]
     };
 
-    var margin = { top: 20, right: 20, bottom: 20, left: 20 };
+    var margin = { top: 20, right: 30, bottom: 100, left: 30 };
     var headerHeight = document.querySelector('h1').offsetHeight + 40; // Adjust based on header height
     var width = window.innerWidth - margin.left - margin.right;
     var height = window.innerHeight - headerHeight - margin.top - margin.bottom;
@@ -200,7 +199,21 @@
       link.attr("d", d3.sankeyLinkHorizontal());
     }
 
+    function adjustFontSize() {
+      var width = window.innerWidth;
+
+      // Use a formula to adjust the font size dynamically based on screen width
+      var fontSize = Math.max(7, width * 0.01); // Base font size on 1% of the width, with a minimum of 10px
+      var headerFontSize = Math.max(18, width * 0.03); // Base header font size on 3% of the width, with a minimum of 18px
+
+      d3.selectAll('.node text').style('font-size', fontSize + 'px');
+      d3.select('h1').style('font-size', headerFontSize + 'px');
+    }
+
+    adjustFontSize();
+
     window.addEventListener("resize", function() {
+      adjustFontSize();
       width = window.innerWidth - margin.left - margin.right;
       height = window.innerHeight - headerHeight - margin.top - margin.bottom;
       svg.attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
